@@ -36,7 +36,6 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		screen.addTreeLenght((int)(startTreeLenght*(20-e.getWheelRotation())/20-startTreeLenght));
-		System.out.println(e.getWheelRotation());
 		screen.repaint();
 	}
 
@@ -86,8 +85,17 @@ public class Input implements KeyListener,MouseListener,MouseMotionListener,Mous
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		int x = e.getX();
-		int y = e.getY();
-		int deg = calculateAngleDeg(screen.getWidth()/2, screen.getHeight()*3/4, x, y);
+		int y = Math.min(screen.getHeight()*3/4, e.getY());
+		int deg;
+		if(y == screen.getHeight()*3/4) {
+			if(x>=screen.getWidth()/2){
+				deg = 0;
+			}else {
+				deg = 180;
+			}
+		}else {
+			deg = calculateAngleDeg(screen.getWidth()/2, screen.getHeight()*3/4, x, y);
+		}
 		screen.movingDir = false;
 		screen.setAngle(deg);
 		screen.setTreeLenght((int)Math.sqrt((screen.getWidth()/2-x)*(screen.getWidth()/2-x)+
